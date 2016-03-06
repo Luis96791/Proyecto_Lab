@@ -185,30 +185,6 @@ using namespace std;
         }
     }
 
-    void run(){
-        while(window.isOpen()){
-            sf::Event event;
-
-//            background.move(-1,0);
-
-            if(background.getPosition().x==200){
-                background.setPosition(0,20);
-            }
-
-            while(window.pollEvent(event)){
-                if(event.type == sf::Event::Closed){
-                    window.close();
-                }
-            }
-
-            window.draw(background);
-            window.display();
-        }
-    }
-
-int main()
-{
-
 //    sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!");
 //
 //    sf::Texture textura;
@@ -290,7 +266,8 @@ int main()
 ////        window.draw(shape1);
 //        window.display();
 //    }
-
-    menuPrincipal();
-    return 0;
-}
+    int main()
+    {
+        menuPrincipal();
+        return 0;
+    }
