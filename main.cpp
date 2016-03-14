@@ -2,6 +2,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include "parallax.h"
 
 #include <iostream>
 
@@ -9,7 +10,7 @@ using namespace std;
 
     sf::RenderWindow window;
  	sf::Texture texture_back;
- 	sf::Sprite background;
+ 	sf::Sprite background, background3;
  	sf::Music music;
 
     void inputsDelMouse(){
@@ -40,14 +41,20 @@ using namespace std;
 
     void parallax(){
         sf::RenderWindow window2;
-        sf::Texture texture;
-        sf::Sprite background;
+        sf::Texture texture, texture1;
+        sf::Sprite background, background2;
 
         window2.create(sf::VideoMode(840,620,32),"Parallax", sf::Style::Close);
         window2.setVerticalSyncEnabled(true);
 
-        texture.loadFromFile("parallax.png");
+        texture.loadFromFile("cielo.png");
         background.setTexture(texture);
+
+        texture1.loadFromFile("montana1.png");
+        background2.setTexture(texture1);
+
+        background3.setTexture(texture1);
+
 
         while(window2.isOpen()){
             sf::Event event;
@@ -58,8 +65,19 @@ using namespace std;
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                     window2.close();
                 }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+                    background2.move(1,0);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+                    background2.move(-1,0);
+                }
             }
+            if(background2.getPosition().x>840)
+                background2.setPosition(0,0);
             window2.draw(background);
+            window2.draw(background2);
+            background3.setPosition(background2.getPosition().x-840,0);
+            window2.draw(background3);
             window2.display();
         }
     }

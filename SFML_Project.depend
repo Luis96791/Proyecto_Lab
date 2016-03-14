@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1457300660 source:c:\users\luis\documents\sfml_project\main.cpp
+1457976397 source:c:\users\luis\documents\sfml_project\main.cpp
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	<SFML/Window/Mouse.hpp>
 	<SFML/Window/Keyboard.hpp>
+	"parallax.h"
 	<iostream>
 
 1367997278 c:\sfml-2.1\include\sfml\graphics.hpp
@@ -400,12 +401,18 @@
 	<SFML/System/Thread.hpp>
 	<vector>
 
-1457050090 source:c:\users\luis\documents\sfml_project\cargar.cpp
+1457406573 source:c:\users\luis\documents\sfml_project\cargar.cpp
 	"cargar.h"
-	<SFML/Graphics.hpp>
-	<SFML/Audio.hpp>
+	<SFML/Window/Mouse.hpp>
 
 1457049233 c:\users\luis\documents\sfml_project\cargar.h
 	<SFML/Audio.hpp>
 	<SFML/Graphics.hpp>
+
+1457406942 source:c:\users\luis\documents\sfml_project\parallax.cpp
+	"parallax.h"
+
+1457407289 c:\users\luis\documents\sfml_project\parallax.h
+	<SFML/Graphics.hpp>
+	<iostream>
 

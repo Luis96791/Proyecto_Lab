@@ -1,8 +1,6 @@
 #include "cargar.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 class Cargar{
-public:
-    Cargar();
+
 };
