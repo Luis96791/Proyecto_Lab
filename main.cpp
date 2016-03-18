@@ -8,10 +8,36 @@
 
 using namespace std;
 
+std::string toString(int number)
+ {
+     if (number == 0)
+         return "0";
+
+
+     if(number < 0)
+         return "-"+toString(-number);
+
+
+     std::string temp="";
+     std::string returnvalue="";
+     while (number>0)
+     {
+         temp+=number%10+48;
+         number/=10;
+     }
+     for (int i=0;i<(int)temp.length();i++)
+         returnvalue+=temp[temp.length()-i-1];
+     return returnvalue;
+ }
+
+
     sf::RenderWindow window;
  	sf::Texture texture_back;
  	sf::Sprite background, background3;
  	sf::Music music;
+ 	sf::Font myFont;
+ 	sf::Mouse mouse;
+ 	string cadena,cadena1;
 
     void inputsDelMouse(){
         sf::RenderWindow window2;
@@ -21,9 +47,25 @@ using namespace std;
         window2.create(sf::VideoMode(840,620,32),"Inputs del Mouse", sf::Style::Close);
         window2.setVerticalSyncEnabled(true);
 
+        if (!myFont.loadFromFile("arial.ttf")){
+
+        }
+        sf::Text pos_text_x,pos_text_y;
+        pos_text_x.setFont(myFont);
+        pos_text_y.setFont(myFont);
+
+        pos_text_x.setCharacterSize(72);
+        pos_text_y.setCharacterSize(72);
+
+        pos_text_x.setColor(sf::Color::White);
+        pos_text_y.setColor(sf::Color::White);
+
+        pos_text_x.setPosition(20,0);
+        pos_text_y.setPosition(690,0);
+
         texture.loadFromFile("inputs.png");
         background.setTexture(texture);
-
+        int eje_x = 0,eje_y = 0;
         while(window2.isOpen()){
             sf::Event event;
             while(window2.pollEvent(event)){
@@ -34,7 +76,17 @@ using namespace std;
                     window2.close();
                 }
             }
+            eje_x = mouse.getPosition().x;
+            cadena = toString(eje_x);
+            pos_text_x.setString(cadena);
+
+            eje_y = mouse.getPosition().y;
+            cadena1 = toString(eje_y);
+            pos_text_y.setString(cadena1);
+
             window2.draw(background);
+            window2.draw(pos_text_x);
+            window2.draw(pos_text_y);
             window2.display();
         }
     }
@@ -44,6 +96,8 @@ using namespace std;
         sf::Texture texture, texture1;
         sf::Sprite background, background2;
 
+        int frames=0;
+
         window2.create(sf::VideoMode(840,620,32),"Parallax", sf::Style::Close);
         window2.setVerticalSyncEnabled(true);
 
@@ -51,8 +105,9 @@ using namespace std;
         background.setTexture(texture);
 
         texture1.loadFromFile("montana1.png");
+        background2.setPosition(0,90);
         background2.setTexture(texture1);
-
+        background3.setPosition(0,90);
         background3.setTexture(texture1);
 
 
@@ -65,20 +120,20 @@ using namespace std;
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                     window2.close();
                 }
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-                    background2.move(1,0);
-                }
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-                    background2.move(-1,0);
-                }
             }
+
             if(background2.getPosition().x>840)
-                background2.setPosition(0,0);
+                background2.setPosition(0,90);
             window2.draw(background);
             window2.draw(background2);
-            background3.setPosition(background2.getPosition().x-840,0);
+            background3.setPosition(background2.getPosition().x-840,90);
             window2.draw(background3);
+
+            if(frames%2==0){
+                background2.move(1,0);
+            }
             window2.display();
+            frames++;
         }
     }
 
