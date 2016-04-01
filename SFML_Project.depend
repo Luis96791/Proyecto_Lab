@@ -1,13 +1,11 @@
 # depslib dependency file v1.0
-1458270922 source:c:\users\luis\documents\sfml_project\main.cpp
+1459481174 source:c:\users\luis\documents\sfml_project\main.cpp
 	<SFML/Graphics.hpp>
 	<SFML/Audio.hpp>
 	<SFML/Window/Mouse.hpp>
 	<SFML/Window/Keyboard.hpp>
 	"parallax.h"
 	<iostream>
-	<ostream>
-	<string>
 
 1367997278 c:\sfml-2.1\include\sfml\graphics.hpp
 	<SFML/Window.hpp>

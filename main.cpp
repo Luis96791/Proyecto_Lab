@@ -30,6 +30,26 @@ std::string toString(int number)
      return returnvalue;
  }
 
+ bool colision(sf::Sprite rect1,sf::Sprite rect2){
+     if(rect1.getPosition().x>rect2.getPosition().x+200){
+        //evaluar izquierda
+        return false;
+     }
+     if(rect1.getPosition().x+200<rect2.getPosition().x){
+         //evaluar derecha
+        return false;
+     }
+     if(rect1.getPosition().y<rect2.getPosition().y-200){
+        //evaluar arriba
+        return false;
+     }
+     if(rect1.getPosition().y-200>rect2.getPosition().y){
+        //evaluar abajo
+        return false;
+     }
+    return true;
+ }
+
 
     sf::RenderWindow window;
  	sf::Texture texture_back;
@@ -41,11 +61,12 @@ std::string toString(int number)
 
     void inputsDelMouse(){
         sf::RenderWindow window2;
-        sf::Texture texture;
-        sf::Sprite background;
+        sf::Texture texture, mouse_texture;
+        sf::Sprite background, mouse_background;
 
         window2.create(sf::VideoMode(840,620,32),"Inputs del Mouse", sf::Style::Close);
         window2.setVerticalSyncEnabled(true);
+
 
         if (!myFont.loadFromFile("arial.ttf")){
 
@@ -65,6 +86,11 @@ std::string toString(int number)
 
         texture.loadFromFile("inputs.png");
         background.setTexture(texture);
+         mouse_texture.loadFromFile("mouse.png");
+         mouse_background.setTexture(mouse_texture);
+
+        mouse_background.setPosition(250,200);
+
         int eje_x = 0,eje_y = 0;
         while(window2.isOpen()){
             sf::Event event;
@@ -75,7 +101,24 @@ std::string toString(int number)
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                     window2.close();
                 }
+                if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                    cout<<"Haciendo Clic Izquierdo.."<<endl;
+                    mouse_texture.loadFromFile("mouse1.png");
+                    mouse_background.setTexture(mouse_texture);
+                }else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)){
+                    cout<<"Haciendo Clic Derecho.."<<endl;
+                    mouse_texture.loadFromFile("mouse2.png");
+                    mouse_background.setTexture(mouse_texture);
+                }else if(sf::Mouse::isButtonPressed(sf::Mouse::Middle)){
+                    cout<<"Pulsando Scroll.."<<endl;
+                    mouse_texture.loadFromFile("mouse3.png");
+                    mouse_background.setTexture(mouse_texture);
+                }else{
+                    mouse_texture.loadFromFile("mouse.png");
+                    mouse_background.setTexture(mouse_texture);
+                }
             }
+
             eje_x = mouse.getPosition().x;
             cadena = toString(eje_x);
             pos_text_x.setString(cadena);
@@ -85,6 +128,7 @@ std::string toString(int number)
             pos_text_y.setString(cadena1);
 
             window2.draw(background);
+            window2.draw(mouse_background);
             window2.draw(pos_text_x);
             window2.draw(pos_text_y);
             window2.display();
@@ -93,13 +137,22 @@ std::string toString(int number)
 
     void parallax(){
         sf::RenderWindow window2;
-        sf::Texture texture, texture1;
-        sf::Sprite background, background2;
+        sf::Texture texture, texture1, arbol;
+        sf::Sprite background, background2, background_arbol;
+
+        sf::CircleShape circulo(30);
+        circulo.setFillColor(sf::Color::Yellow);
+        circulo.setPosition(30,30);
+
+        sf::CircleShape circulo2(30);
+        circulo2.setFillColor(sf::Color::Blue);
+        circulo2.setPosition(720,500);
 
         int frames=0;
 
         window2.create(sf::VideoMode(840,620,32),"Parallax", sf::Style::Close);
         window2.setVerticalSyncEnabled(true);
+
 
         texture.loadFromFile("cielo.png");
         background.setTexture(texture);
@@ -110,6 +163,9 @@ std::string toString(int number)
         background3.setPosition(0,90);
         background3.setTexture(texture1);
 
+        bool flag = false;
+        int pos_x_yellow = circulo.getPosition().x;
+        int pos_x_blue = circulo2.getPosition().x;
 
         while(window2.isOpen()){
             sf::Event event;
@@ -119,6 +175,20 @@ std::string toString(int number)
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                     window2.close();
+                }
+            }
+
+            if(!flag){
+                circulo.setPosition(pos_x_yellow++,30);
+                circulo2.setPosition(pos_x_blue--,500);
+                if(circulo.getPosition().x==500){
+                    flag=true;
+                }
+            }else{
+                circulo.setPosition(pos_x_yellow--,30);
+                circulo2.setPosition(pos_x_blue++,500);
+                if(circulo.getPosition().x==30){
+                    flag=false;
                 }
             }
 
@@ -132,6 +202,8 @@ std::string toString(int number)
             if(frames%2==0){
                 background2.move(1,0);
             }
+            window2.draw(circulo2);
+            window2.draw(circulo);
             window2.display();
             frames++;
         }
@@ -139,14 +211,29 @@ std::string toString(int number)
 
     void colisiones(){
         sf::RenderWindow window2;
-        sf::Texture texture;
-        sf::Sprite background;
+        sf::Texture texture,avion_comercial,avion_guerra,colision_image;
+        sf::Sprite background,b_avion_comercial,b_avion_guerra,b_colision_image;
+
+
+        avion_guerra.loadFromFile("aviones/guerra/2.png");
+        b_avion_guerra.setTexture(avion_guerra);
+        b_avion_guerra.setPosition(30,300);
+
+        avion_comercial.loadFromFile("aviones/comercial/4.png");
+        b_avion_comercial.setTexture(avion_comercial);
+        b_avion_comercial.setPosition(600,300);
+
+        colision_image.loadFromFile("colision.png");
+        b_colision_image.setTexture(colision_image);
 
         window2.create(sf::VideoMode(840,620,32),"Colisiones", sf::Style::Close);
         window2.setVerticalSyncEnabled(true);
 
         texture.loadFromFile("colisiones.png");
         background.setTexture(texture);
+
+        int pos_y_rect1 =300,pos_x_rect1=600;
+        int pos_y_rect =300,pos_x_rect=30;
 
         while(window2.isOpen()){
             sf::Event event;
@@ -157,8 +244,59 @@ std::string toString(int number)
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                     window2.close();
                 }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+                    avion_comercial.loadFromFile("aviones/comercial/1.png");
+                    b_avion_comercial.setTexture(avion_comercial);
+                    b_avion_comercial.setPosition(pos_x_rect1,pos_y_rect1-=2);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+                    avion_comercial.loadFromFile("aviones/comercial/3.png");
+                    b_avion_comercial.setTexture(avion_comercial);
+                    b_avion_comercial.setPosition(pos_x_rect1,pos_y_rect1+=2);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+                    avion_comercial.loadFromFile("aviones/comercial/2.png");
+                    b_avion_comercial.setTexture(avion_comercial);
+                    b_avion_comercial.setPosition(pos_x_rect1+=2,pos_y_rect1);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+                    avion_comercial.loadFromFile("aviones/comercial/4.png");
+                    b_avion_comercial.setTexture(avion_comercial);
+                    b_avion_comercial.setPosition(pos_x_rect1-=2,pos_y_rect1);
+                }
+
+
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+                    avion_guerra.loadFromFile("aviones/guerra/1.png");
+                    b_avion_guerra.setTexture(avion_guerra);
+                    b_avion_guerra.setPosition(pos_x_rect,pos_y_rect-=2);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+                    avion_guerra.loadFromFile("aviones/guerra/3.png");
+                    b_avion_guerra.setTexture(avion_guerra);
+                    b_avion_guerra.setPosition(pos_x_rect,pos_y_rect+=2);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+                    avion_guerra.loadFromFile("aviones/guerra/2.png");
+                    b_avion_guerra.setTexture(avion_guerra);
+                    b_avion_guerra.setPosition(pos_x_rect+=2,pos_y_rect);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+                    avion_guerra.loadFromFile("aviones/guerra/4.png");
+                    b_avion_guerra.setTexture(avion_guerra);
+                    b_avion_guerra.setPosition(pos_x_rect-=2,pos_y_rect);
+                }
             }
+
             window2.draw(background);
+            window2.draw(b_avion_comercial);
+            window2.draw(b_avion_guerra);
+
+            if(colision(b_avion_comercial,b_avion_guerra)){
+                b_colision_image.setPosition(300,50);
+                window2.draw(b_colision_image);
+            }
+
             window2.display();
         }
     }
@@ -195,8 +333,8 @@ std::string toString(int number)
         window1.create(sf::VideoMode(840,620,32),"Menu Principal", sf::Style::Close);
         window.setVerticalSyncEnabled(true);
 
-        sf::Texture menu0, menu1, menu2, menu3, menu4;
-        sf::Sprite background0, background1, background2, background3, background4;
+        sf::Texture menu0, menu1, menu2, menu3;
+        sf::Sprite background0, background1, background2, background3;
 
         menu0.loadFromFile("menu0.png");
         background0.setTexture(menu0);
@@ -206,8 +344,6 @@ std::string toString(int number)
         background2.setTexture(menu2);
         menu3.loadFromFile("menu3.png");
         background3.setTexture(menu3);
-        menu4.loadFromFile("menu4.png");
-        background4.setTexture(menu4);
 
         while(window1.isOpen()){
             sf::Event event1;
@@ -218,8 +354,8 @@ std::string toString(int number)
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
                     opc++;
-                    if(opc>5)
-                        opc = 5;
+                    if(opc>3)
+                        opc = 3;
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
                     opc--;
@@ -230,30 +366,25 @@ std::string toString(int number)
 //--------------------------------------------------------------------
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
                     switch(opc){
-                    case 2:
+                    case 1:
                         inputsDelMouse(); opc = 1;
                         break;
-                    case 3:
+                    case 2:
                         parallax(); opc = 1;
                         break;
-                    case 4:
+                    case 3:
                         colisiones(); opc = 1;
-                        break;
-                    case 5:
-                        efectosDeSonido(); opc = 1;
                         break;
                     }
                 }
             }
             window1.draw(background0);
-            if(opc==2)
+            if(opc==1)
                 window1.draw(background1);
-            if(opc==3)
+            if(opc==2)
                 window1.draw(background2);
-            if(opc==4)
+            if(opc==3)
                 window1.draw(background3);
-            if(opc==5)
-                window1.draw(background4);
             window1.display();
         }
     }
