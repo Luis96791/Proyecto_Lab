@@ -49,8 +49,6 @@
 		<Linker>
 			<Add library="libsfml-audio.a" />
 		</Linker>
-		<Unit filename="cargar.cpp" />
-		<Unit filename="cargar.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="parallax.cpp" />
 		<Unit filename="parallax.h" />
