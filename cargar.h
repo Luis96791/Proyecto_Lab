@@ -1,7 +1,7 @@
 #ifndef CARGAR_HPP
 #define CARGAR_HPP
 
-#include <SFML/Audio.hpp>
+#include <SFML
 #include <SFML/Graphics.hpp>
 
 class cargar

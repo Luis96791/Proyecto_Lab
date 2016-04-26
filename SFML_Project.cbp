@@ -51,8 +51,6 @@
 			<Add library="sfml-window" />
 			<Add library="sfml-system" />
 		</Linker>
-		<Unit filename="cargar.cpp" />
-		<Unit filename="cargar.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="parallax.cpp" />
 		<Unit filename="parallax.h" />

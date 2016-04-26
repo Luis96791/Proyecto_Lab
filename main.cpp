@@ -89,6 +89,9 @@ std::string toString(int number)
         sf::RenderWindow window2;
         sf::Texture texture, mouse_texture;
         sf::Sprite background, mouse_background;
+        sf::Music music;
+
+        music.openFromFile("clic.ogg");
 
 
         window2.create(sf::VideoMode(840,620,32),"Inputs del Mouse", sf::Style::Fullscreen);
@@ -132,14 +135,17 @@ std::string toString(int number)
                     cout<<"Haciendo Clic Izquierdo.."<<endl;
                     mouse_texture.loadFromFile("mouse1.png");
                     mouse_background.setTexture(mouse_texture);
+                    music.play();
                 }else if(sf::Mouse::isButtonPressed(sf::Mouse::Right)){
                     cout<<"Haciendo Clic Derecho.."<<endl;
                     mouse_texture.loadFromFile("mouse2.png");
                     mouse_background.setTexture(mouse_texture);
+                    music.play();
                 }else if(sf::Mouse::isButtonPressed(sf::Mouse::Middle)){
                     cout<<"Pulsando Scroll.."<<endl;
                     mouse_texture.loadFromFile("mouse3.png");
                     mouse_background.setTexture(mouse_texture);
+                    music.play();
                 }else{
                     mouse_texture.loadFromFile("mouse.png");
                     mouse_background.setTexture(mouse_texture);
@@ -212,15 +218,15 @@ std::string toString(int number)
             }
 
             if(!flag){
-                circulo.setPosition(pos_x_yellow++,30);
-                circulo2.setPosition(pos_x_blue--,500);
-                if(circulo.getPosition().x==500){
+                circulo.setPosition(pos_x_yellow+=3,30);
+                circulo2.setPosition(pos_x_blue-=3,500);
+                if(circulo.getPosition().x>=500){
                     flag=true;
                 }
             }else{
-                circulo.setPosition(pos_x_yellow--,30);
-                circulo2.setPosition(pos_x_blue++,500);
-                if(circulo.getPosition().x==30){
+                circulo.setPosition(pos_x_yellow-=3,30);
+                circulo2.setPosition(pos_x_blue+=3,500);
+                if(circulo.getPosition().x<=30){
                     flag=false;
                 }
             }
@@ -366,13 +372,16 @@ std::string toString(int number)
     }
 
     void menuPrincipal(){
-        int opc =1;
+        int opc =0;
         sf::RenderWindow window1;
+        sf::Music music;
         window1.create(sf::VideoMode(840,620,32),"Menu Principal", sf::Style::Close);
         window.setVerticalSyncEnabled(true);
 
         sf::Texture menu0, menu1, menu2, menu3;
         sf::Sprite background0, background1, background2, background3;
+
+        music.openFromFile("golpe.ogg");
 
         menu0.loadFromFile("menu0.png");
         background0.setTexture(menu0);
@@ -392,13 +401,15 @@ std::string toString(int number)
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
                     opc++;
+                    music.play();
                     if(opc>3)
                         opc = 3;
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
                     opc--;
-                    if(opc<1)
-                        opc = 1;
+                    music.play();
+                    if(opc<0)
+                        opc = 0;
                 }
 
 //--------------------------------------------------------------------
