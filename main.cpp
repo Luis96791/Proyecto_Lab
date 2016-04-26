@@ -8,6 +8,31 @@
 
 using namespace std;
 
+bool IsPressed(sf::Sprite sprite, sf::Vector2i MousePosition) {
+ 	if (MousePosition.x >= sprite.getPosition().x && MousePosition.x <= (sprite.getPosition().x + sprite.getTextureRect().width)) {
+ 		if (MousePosition.y >= sprite.getPosition().y && MousePosition.y <= (sprite.getPosition().y + sprite.getTextureRect().height)) {
+ 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+ 				return true;
+ 			}
+ 		}
+ 	}
+ 	return false;
+}
+sf::RenderWindow window5;
+bool clickSprite(sf::Sprite a){
+    sf::Vector2f mouse = window5.mapPixelToCoords(sf::Mouse::getPosition(window5));
+
+    sf::FloatRect bounds = a.getGlobalBounds();
+
+    if(bounds.contains(mouse)){
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+            return true;
+        }
+    }
+    return false;
+}
+
+
 std::string toString(int number)
  {
      if (number == 0)
@@ -54,17 +79,19 @@ std::string toString(int number)
     sf::RenderWindow window;
  	sf::Texture texture_back;
  	sf::Sprite background, background3;
- 	sf::Music music;
  	sf::Font myFont;
  	sf::Mouse mouse;
  	string cadena,cadena1;
+    string nombre;
+    sf::String userInput;
 
     void inputsDelMouse(){
         sf::RenderWindow window2;
         sf::Texture texture, mouse_texture;
         sf::Sprite background, mouse_background;
 
-        window2.create(sf::VideoMode(840,620,32),"Inputs del Mouse", sf::Style::Close);
+
+        window2.create(sf::VideoMode(840,620,32),"Inputs del Mouse", sf::Style::Fullscreen);
         window2.setVerticalSyncEnabled(true);
 
 
@@ -117,11 +144,16 @@ std::string toString(int number)
                     mouse_texture.loadFromFile("mouse.png");
                     mouse_background.setTexture(mouse_texture);
                 }
+                if (event.type == sf::Event::TextEntered)
+                {
+                    userInput.insert(userInput.getSize(),event.text.unicode);
+                    pos_text_x.setString(userInput);
+                }
             }
-
             eje_x = mouse.getPosition().x;
             cadena = toString(eje_x);
-            pos_text_x.setString(cadena);
+            string nombreString = userInput;
+            cout<<nombreString<<endl;
 
             eje_y = mouse.getPosition().y;
             cadena1 = toString(eje_y);
@@ -133,6 +165,7 @@ std::string toString(int number)
             window2.draw(pos_text_y);
             window2.display();
         }
+
     }
 
     void parallax(){
@@ -210,7 +243,6 @@ std::string toString(int number)
     }
 
     void colisiones(){
-        sf::RenderWindow window2;
         sf::Texture texture,avion_comercial,avion_guerra,colision_image;
         sf::Sprite background,b_avion_comercial,b_avion_guerra,b_colision_image;
 
@@ -226,8 +258,8 @@ std::string toString(int number)
         colision_image.loadFromFile("colision.png");
         b_colision_image.setTexture(colision_image);
 
-        window2.create(sf::VideoMode(840,620,32),"Colisiones", sf::Style::Close);
-        window2.setVerticalSyncEnabled(true);
+        window5.create(sf::VideoMode(840,620,32),"Colisiones", sf::Style::Close);
+        window5.setVerticalSyncEnabled(true);
 
         texture.loadFromFile("colisiones.png");
         background.setTexture(texture);
@@ -235,14 +267,16 @@ std::string toString(int number)
         int pos_y_rect1 =300,pos_x_rect1=600;
         int pos_y_rect =300,pos_x_rect=30;
 
-        while(window2.isOpen()){
+
+
+        while(window5.isOpen()){
             sf::Event event;
-            while(window2.pollEvent(event)){
+            while(window5.pollEvent(event)){
                 if(event.type==sf::Event::Closed){
-                    window2.close();
+                    window5.close();
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-                    window2.close();
+                    window5.close();
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
                     avion_comercial.loadFromFile("aviones/comercial/1.png");
@@ -288,16 +322,20 @@ std::string toString(int number)
                 }
             }
 
-            window2.draw(background);
-            window2.draw(b_avion_comercial);
-            window2.draw(b_avion_guerra);
+            window5.draw(background);
+            window5.draw(b_avion_comercial);
+            window5.draw(b_avion_guerra);
 
             if(colision(b_avion_comercial,b_avion_guerra)){
                 b_colision_image.setPosition(300,50);
-                window2.draw(b_colision_image);
+                window5.draw(b_colision_image);
             }
 
-            window2.display();
+            if(clickSprite(b_avion_comercial)){
+                cout<<"Haciendo clic en avion..!"<<endl;
+            }
+
+            window5.display();
         }
     }
 

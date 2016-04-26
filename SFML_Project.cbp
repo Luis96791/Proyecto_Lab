@@ -47,7 +47,9 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Linker>
-			<Add library="libsfml-audio.a" />
+			<Add library="sfml-graphics" />
+			<Add library="sfml-window" />
+			<Add library="sfml-system" />
 		</Linker>
 		<Unit filename="cargar.cpp" />
 		<Unit filename="cargar.h" />
